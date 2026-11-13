@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCINTYRE DESIGN & BUILD LTD | Digital Architecture Solutions</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        mcintyre: {
+                            bg: '#040914', /* Deep blueprint navy */
+                            card: '#0c162c', /* Slightly lighter navy */
+                            border: '#1e325c', 
+                            accent: '#38bdf8', /* Bright Cyan/Sky for blueprints */
+                            accent2: '#0ea5e9', /* Deeper Sky Blue */
+                            textMuted: '#94a3b8',
+                            textWhite: '#f8fafc'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #040914;
+            color: #f8fafc;
+        }
+        /* Blueprint Technical Grid */
+        .bg-technical {
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-attachment: fixed;
+        }
+        .spa-view {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .spa-view.active {
+            display: block;
+            opacity: 1;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1.25rem;
+            border-radius: 0.5rem;
+            border: 1px solid #1e325c;
+            background-color: #040914;
+            color: #f8fafc;
+            transition: all 0.2s;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col bg-technical relative">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-mcintyre-bg/90 backdrop-blur-xl border-b border-mcintyre-border">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#home" class="flex items-center group relative z-10">
+                    <div class="w-10 h-10 border border-mcintyre-accent/50 bg-mcintyre-accent/10 rounded flex items-center justify-center mr-3 group-hover:scale-105 transition-transform shadow-[0_0_15px_rgba(56,189,248,0.15)]">
+                        <svg class="w-6 h-6 text-mcintyre-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <span class="font-display font-bold text-xl tracking-wide text-mcintyre-textWhite uppercase mt-0.5">McIntyre D&B</span>
+                </a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8 relative z-10">
+                    <a href="#home" class="text-sm font-semibold text-mcintyre-textMuted hover:text-mcintyre-textWhite uppercase tracking-widest transition-colors">Platform</a>
+                    <a href="#support" class="text-sm font-semibold text-mcintyre-textMuted hover:text-mcintyre-textWhite uppercase tracking-widest transition-colors">Support</a>
+                    <a href="#support" class="px-5 py-2.5 rounded bg-mcintyre-textWhite text-mcintyre-bg text-sm font-bold uppercase tracking-widest hover:bg-mcintyre-accent hover:text-white transition-colors">
+                        Connect
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center relative z-10">
+                    <button id="mobileMenuBtn" class="text-mcintyre-textMuted hover:text-white transition-colors">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7h16M4 12h16M4 17h16"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-mcintyre-card border-b border-mcintyre-border relative z-10 shadow-2xl">
+            <div class="px-4 pt-2 pb-4 space-y-1">
+                <a href="#home" class="block px-4 py-3 text-sm font-semibold text-mcintyre-textMuted hover:text-white uppercase tracking-widest border-b border-mcintyre-border/50">Platform</a>
+                <a href="#support" class="block px-4 py-3 text-sm font-semibold text-mcintyre-textMuted hover:text-white uppercase tracking-widest border-b border-mcintyre-border/50">Support</a>
+                <a href="#privacy" class="block px-4 py-3 text-sm font-semibold text-mcintyre-textMuted hover:text-white uppercase tracking-widest">Privacy Policy</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow pt-20 relative z-10">
+        
+        <!-- ==================== HOME VIEW ==================== -->
+        <div id="view-home" class="spa-view active">
+            <!-- Hero -->
+            <section class="py-24 lg:py-32 px-6">
+                <div class="max-w-5xl mx-auto text-center">
+                    <div class="inline-flex items-center px-5 py-1.5 rounded-full border border-mcintyre-accent/30 bg-mcintyre-accent/10 text-mcintyre-accent text-xs font-bold tracking-widest uppercase mb-8 shadow-[0_0_15px_rgba(56,189,248,0.1)]">
+                        Dorking • Construction Tech
+                    </div>
+                    <h1 class="font-display font-extrabold text-4xl md:text-6xl lg:text-7xl text-white leading-tight mb-8">
+                        Architecting the <br/>
+                        <span class="text-gradient">Digital Blueprint.</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-mcintyre-textMuted max-w-2xl mx-auto font-light leading-relaxed">
+                        MCINTYRE DESIGN & BUILD LIMITED engineers high-performance CAD and spatial visualization tools for enterprise architecture professionals on iOS and iPadOS.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Projects -->
+            <section class="py-20 px-6 border-t border-mcintyre-border bg-mcintyre-bg/80 backdrop-blur-sm">
+                <div class="max-w-7xl mx-auto">
+                    <div class="mb-16">
+                        <h2 class="font-display text-4xl font-bold text-white mb-3">Enterprise Suite</h2>
+                        <p class="text-mcintyre-textMuted text-lg">Proprietary B2B software solutions currently in production.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- App 1 -->
+                        <div class="bg-mcintyre-card border border-mcintyre-border p-8 rounded-2xl hover:border-mcintyre-accent/50 transition-all duration-300 group shadow-lg">
+                            <div class="w-14 h-14 bg-mcintyre-bg border border-mcintyre-border rounded-xl flex items-center justify-center text-mcintyre-accent mb-8 group-hover:scale-110 transition-transform">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                            </div>
+                            <h3 class="font-display text-3xl font-bold text-white mb-3">McIntyre AR Draft</h3>
+                            <div class="inline-flex items-center px-4 py-1.5 bg-mcintyre-bg text-mcintyre-textMuted border border-mcintyre-border text-xs font-bold uppercase tracking-wider rounded-full mb-5">
+                                <span class="w-2 h-2 rounded-full bg-yellow-500 mr-2"></span> Beta Phase
+                            </div>
+                            <p class="text-mcintyre-textMuted text-base leading-relaxed">
+                                An augmented reality tool designed for on-site structural engineers. Leverages ARKit and LiDAR to project highly accurate construction schematics directly onto physical sites.
+                            </p>
+                        </div>
+
+                        <!-- App 2 -->
+                        <div class="bg-mcintyre-card border border-mcintyre-border p-8 rounded-2xl hover:border-mcintyre-accent2/50 transition-all duration-300 group shadow-lg">
+                            <div class="w-14 h-14 bg-mcintyre-bg border border-mcintyre-border rounded-xl flex items-center justify-center text-mcintyre-accent2 mb-8 group-hover:scale-110 transition-transform">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+                            </div>
+                            <h3 class="font-display text-3xl font-bold text-white mb-3">BuildSync API</h3>
+                            <div class="inline-flex items-center px-4 py-1.5 bg-mcintyre-bg text-mcintyre-textMuted border border-mcintyre-border text-xs font-bold uppercase tracking-wider rounded-full mb-5">
+                                <span class="w-2 h-2 rounded-full bg-blue-500 mr-2"></span> In Engineering
+                            </div>
+                            <p class="text-mcintyre-textMuted text-base leading-relaxed">
+                                Our bespoke BIM (Building Information Modeling) rendering framework optimized to handle heavy industrial architectural exports without thermal throttling on Apple Silicon.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Corporate Registry -->
+            <section class="py-24 px-6 border-t border-mcintyre-border">
+                <div class="max-w-4xl mx-auto">
+                    <div class="mb-10 text-center md:text-left">
+                        <h2 class="font-display text-4xl font-bold text-white mb-2">Corporate Registry</h2>
+                        <p class="text-mcintyre-textMuted text-base">Verified UK operational data.</p>
+                    </div>
+
+                    <div class="bg-mcintyre-card border border-mcintyre-border p-8 md:p-12 rounded-[2rem] relative overflow-hidden shadow-2xl">
+                        <!-- Technical corner details -->
+                        <div class="absolute top-0 right-0 w-24 h-24 border-t border-r border-mcintyre-accent/20 pointer-events-none"></div>
+                        <div class="absolute bottom-0 left-0 w-24 h-24 border-b border-l border-mcintyre-accent/20 pointer-events-none"></div>
+
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 pb-8 border-b border-mcintyre-border relative z-10">
+                            <div>
+                                <p class="text-xs font-bold text-mcintyre-accent uppercase tracking-widest mb-2">Registered Entity</p>
+                                <h3 class="text-2xl md:text-3xl font-display font-bold text-white uppercase tracking-wider leading-snug">MCINTYRE DESIGN & BUILD LTD</h3>
+                            </div>
+                            <div class="mt-4 md:mt-0 flex-shrink-0 ml-4">
+                                <div class="px-5 py-2.5 bg-green-950/40 border border-green-500/30 text-green-400 text-xs font-bold uppercase tracking-widest rounded-md flex items-center">
+                                    <span class="w-2 h-2 bg-green-400 rounded-full mr-2 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></span> Active Status
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+                            <div>
+                                <p class="text-xs font-bold text-mcintyre-textMuted uppercase tracking-widest mb-3">D-U-N-S® Number</p>
+                                <p class="text-xl font-mono text-white font-medium bg-mcintyre-bg inline-block px-5 py-2.5 border border-mcintyre-border rounded-md">219323739</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-mcintyre-textMuted uppercase tracking-widest mb-3">Headquarters Address</p>
+                                <div class="flex items-start">
+                                    <svg class="w-6 h-6 text-mcintyre-accent mr-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    <p class="text-lg text-white leading-relaxed font-medium">
+                                        Constable Court 62 Dene Street<br>
+                                        DORKING, RH4 2DP<br>
+                                        United Kingdom
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==================== SUPPORT VIEW ==================== -->
+        <div id="view-support" class="spa-view pt-12 pb-32 px-6">
+            <div class="max-w-2xl mx-auto">
+                <div class="text-center mb-12">
+                    <h1 class="font-display text-5xl font-bold text-white mb-4">Enterprise Support</h1>
+                    <p class="text-mcintyre-textMuted text-lg">Contact our engineering operations for B2B beta access and technical inquiries.</p>
+                </div>
+
+                <div class="bg-mcintyre-card border border-mcintyre-border p-8 md:p-10 rounded-[2rem] shadow-2xl">
+                    <form action="https://formspree.io/f/YOUR_FORM_ID_HERE" method="POST" class="space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-bold text-mcintyre-textMuted uppercase tracking-widest mb-2">Representative Name</label>
+                                <input type="text" name="name" required class="form-input" placeholder="Your Name">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-mcintyre-textMuted uppercase tracking-widest mb-2">Corporate Email</label>
+                                <input type="email" name="email" required class="form-input" placeholder="email@company.com">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-mcintyre-textMuted uppercase tracking-widest mb-2">Request Category</label>
+                            <select name="subject" class="form-input appearance-none">
+                                <option>McIntyre AR Beta Access</option>
+                                <option>Technical Assistance</option>
+                                <option>Business Partnerships</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-mcintyre-textMuted uppercase tracking-widest mb-2">Transmission Details</label>
+                            <textarea name="message" rows="5" required class="form-input resize-none" placeholder="Provide operational context..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-mcintyre-accent to-mcintyre-accent2 text-white font-bold tracking-widest uppercase rounded-xl hover:opacity-90 transition-opacity shadow-lg">
+                            Submit Request
+                        </button>
+                    </form>
+                </div>
+
+                <div class="mt-12 text-center p-8 bg-mcintyre-bg border border-mcintyre-border rounded-[2rem]">
+                    <p class="text-mcintyre-textMuted text-sm font-bold uppercase tracking-widest mb-2">Direct Comms</p>
+                    <a href="mailto:admin@mcintyredesignbuild.click" class="text-mcintyre-accent hover:text-white transition-colors text-xl md:text-2xl font-display mt-2 inline-block font-bold">admin@mcintyredesignbuild.click</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== PRIVACY VIEW ==================== -->
+        <div id="view-privacy" class="spa-view pt-12 pb-32 px-6">
+            <div class="max-w-4xl mx-auto bg-mcintyre-card border border-mcintyre-border p-10 md:p-16 rounded-[2rem] shadow-2xl">
+                <h1 class="font-display text-4xl font-bold text-white mb-2">Privacy Protocol</h1>
+                <p class="text-mcintyre-accent text-xs font-bold tracking-widest uppercase mb-10 pb-8 border-b border-mcintyre-border">Effective Date: June 18, 2024</p>
+                
+                <div class="space-y-8 text-mcintyre-textMuted text-base leading-relaxed">
+                    <p><strong>MCINTYRE DESIGN & BUILD LIMITED</strong> strictly enforces data protection standards. This document details our data handling procedures for our enterprise applications and corporate infrastructure.</p>
+                    
+                    <div>
+                        <h3 class="text-xl font-display font-bold text-white mb-3">1. Diagnostic Collection</h3>
+                        <p>We do not passively extract personal data. Our enterprise applications log anonymized crash reports and engine metrics solely to refine AR stability and reduce rendering latency.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-display font-bold text-white mb-3">2. Information Processing</h3>
+                        <p>Information actively supplied by users through our B2B support terminals or beta registration forms is processed exclusively to deliver technical support and authenticate corporate access.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-display font-bold text-white mb-3">3. UK Data Sovereignty (UK GDPR)</h3>
+                        <p>Operating out of Dorking, United Kingdom, our protocols align strictly with the UK General Data Protection Regulation (UK GDPR). Corporate clients and individual users retain full authority to request audits, modifications, or erasure of their records via our support channels.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TERMS VIEW ==================== -->
+        <div id="view-terms" class="spa-view pt-12 pb-32 px-6">
+            <div class="max-w-4xl mx-auto bg-mcintyre-card border border-mcintyre-border p-10 md:p-16 rounded-[2rem] shadow-2xl">
+                <h1 class="font-display text-4xl font-bold text-white mb-2">Terms of Service</h1>
+                <p class="text-mcintyre-accent text-xs font-bold tracking-widest uppercase mb-10 pb-8 border-b border-mcintyre-border">Last Updated: June 18, 2024</p>
+                
+                <div class="space-y-8 text-mcintyre-textMuted text-base leading-relaxed">
+                    <p>Utilization of software ecosystems, APIs, and digital environments governed by <strong>MCINTYRE DESIGN & BUILD LIMITED</strong> implies your acceptance of the following operating conditions.</p>
+                    
+                    <div>
+                        <h3 class="text-xl font-display font-bold text-white mb-3">1. Software License (EULA)</h3>
+                        <p>We provide a restricted, non-transferable license to interface with our digital design utilities. Reverse engineering, API misuse, or commercial redistribution of our proprietary code is strictly prohibited.</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-display font-bold text-white mb-3">2. Pre-Release Constraints</h3>
+                        <p>Systems designated as "Beta" or "In Engineering" are deployed as-is. MCINTYRE DESIGN & BUILD LIMITED accepts no liability for rendering failures, corporate data corruption, or downtime stemming from beta environment usage.</p>
+                    </div>
+
+                    <div>
+                        <h3 class="text-xl font-display font-bold text-white mb-3">3. Legal Jurisdiction</h3>
+                        <p>These terms are governed exclusively by the laws of England and Wales. Any legal contestations shall be resolved within the courts of the United Kingdom.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-mcintyre-border bg-mcintyre-bg px-6 py-12 mt-auto relative z-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm">
+            <div class="mb-6 md:mb-0 text-center md:text-left">
+                <span class="font-display font-bold text-white uppercase tracking-widest block mb-2 text-lg">MCINTYRE DESIGN & BUILD LTD</span>
+                <span class="text-mcintyre-textMuted font-mono text-xs">&copy; 2024-2026. All rights reserved.</span>
+            </div>
+            <div class="flex space-x-8">
+                <a href="#privacy" class="text-mcintyre-textMuted hover:text-white uppercase tracking-widest font-bold transition-colors">Privacy</a>
+                <a href="#terms" class="text-mcintyre-textMuted hover:text-white uppercase tracking-widest font-bold transition-colors">Terms</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SPA Router Script -->
+    <script>
+        function route() {
+            let hash = window.location.hash || '#home';
+            if (hash === '#' || hash === '') hash = '#home';
+
+            document.querySelectorAll('.spa-view').forEach(view => {
+                view.classList.remove('active');
+            });
+
+            const targetView = document.querySelector('#view-' + hash.substring(1));
+            if (targetView) {
+                targetView.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                document.querySelector('#view-home').classList.add('active');
+                window.location.hash = '#home';
+            }
+        }
+
+        window.addEventListener('hashchange', route);
+        window.addEventListener('DOMContentLoaded', route);
+
+        const btn = document.getElementById('mobileMenuBtn');
+        const menu = document.getElementById('mobileMenu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('#mobileMenu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
